@@ -516,13 +516,19 @@ IF(WIN32)
     ENDIF()
 ENDIF()
 
+set(TARGET_NAME "")
 IF(FREEGLUT_BUILD_SHARED_LIBS)
+    set(TARGET_NAME freeglut)
     ADD_LIBRARY(freeglut SHARED ${FREEGLUT_SRCS})
 ENDIF()
 IF(FREEGLUT_BUILD_STATIC_LIBS)
+    set(TARGET_NAME freeglut_static)
     ADD_LIBRARY(freeglut_static STATIC ${FREEGLUT_SRCS})
 ENDIF()
 
+target_include_directories(${TARGET_NAME}
+        PUBLIC
+        $<BUILD_INTERFACE:${CMAKE_CURRENT_LIST_DIR}/include>)
 
 SET(LIBNAME freeglut)
 IF(WIN32)
@@ -552,6 +558,7 @@ IF(WIN32)
         ENDIF()
     ENDIF()
 ELSE()
+
     # on UNIX we need to make sure:
     # - all shared libraries must have a soname/version, see :
     #   http://sourceware.org/autobook/autobook/autobook_91.html#SEC91
